@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Login } from './dbconnect';
+import { Login } from '../conections/dbconnect';
 
 const theme = createTheme();
 
@@ -81,7 +81,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/SingUp" variant="body2">
+                <Link href="/plans" variant="body2">
                   {"Registrarse >"}
                 </Link>
               </Grid>

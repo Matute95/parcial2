@@ -1,10 +1,10 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import SignIn from "./SingIn";
-import { auth } from "./firebase";
+import SignIn from "./session/singIn";
+import { auth } from "./conections/firebase";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SignUp from "./SingUp";
-import MiniDrawer from "./navbar";
+import Pricing from "./session/plans";
+import MiniDrawer from "./components/navbar";
 
 export default function App() {
   const [user, setUser] = useState(null)
@@ -20,7 +20,7 @@ export default function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={user?<MiniDrawer/>:<SignIn/>} />
-        <Route path="/SingUp" element={<SignUp/>} />
+        <Route path="/plans" element={<Pricing/>} />
       </Routes>
     </div>
     </BrowserRouter>

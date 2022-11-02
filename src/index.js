@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { RoomProvider } from "./liveblocks.config";
+import { RoomProvider } from "./conections/liveblocks.config";
 import { LiveMap } from "@liveblocks/client";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
