@@ -20,6 +20,7 @@ export default function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={user?<MiniDrawer/>:<SignIn/>} />
+        <Route path="/:id" element={<MiniDrawer/>} />
         <Route path="/plans" element={<Pricing/>} />
       </Routes>
     </div>

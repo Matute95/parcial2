@@ -38,3 +38,14 @@
     })
     return coleccion
    }
+
+   export async function getProyectos(){
+    const items = await get("proyecto")
+    const data = []
+    items.forEach((item)=>{
+      if(item.usuario===auth.currentUser.uid){
+        data.push(item)
+      }
+    })
+    return data
+   }
