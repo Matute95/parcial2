@@ -82,6 +82,15 @@ function Canvas({ shapes }) {
         }
       }
     };
+    const changeText = (t) => {
+      const shape = shapes.get(selectedShape)
+      if (shape) {
+        shapes.set(selectedShape, {
+          ...shape,
+          text: t
+        });
+      }
+    }
     const persona = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/5.png?alt=media&token=e91e4ebd-04b1-4bf6-a698-7bb24f243d96"
     const objeto = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/1.png?alt=media&token=791d3067-d955-4f3b-a92b-8194d0f925b9"
     const db = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/2.png?alt=media&token=f752991f-d546-4a39-81b2-fb8cd62eb979"
@@ -120,6 +129,7 @@ function Canvas({ shapes }) {
                   id={shapeId}
                   onShapePointerDown={onShapePointerDown}
                   selectionColor={selectionColor}
+                  changeText={changeText}
                 />
               );
           })}
