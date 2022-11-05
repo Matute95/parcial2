@@ -2,7 +2,7 @@ import { auth } from '../conections/firebase';
 import { StrictMode, useState, useEffect } from 'react';
 import { RoomProvider } from '../conections/liveblocks.config';
 import { LiveMap } from '@liveblocks/client';
-import { Add, ArrowForward , AccountCircle, MenuOpen} from "@mui/icons-material"
+import { Add, ArrowForward , AccountCircle} from "@mui/icons-material"
 import { Button, Grid, IconButton, List, ListItem, MenuItem,
         ListItemText, Modal, TextField, Typography, Menu,
         CssBaseline, AppBar, Box, Toolbar} from "@mui/material"
@@ -66,16 +66,7 @@ export default function MenuAppBar() {
       <Box sx={{ flexGrow: 1 }}><CssBaseline/>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuOpen/>
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, ml:10}}>
             <strong>Segundo parcial</strong>
           </Typography>
             <div>

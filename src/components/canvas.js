@@ -3,7 +3,7 @@ import { useMap, useMyPresence, useOthers, useHistory } from "../conections/live
 import List from '@mui/material/List'
 import { Delete, Link, Redo, Undo } from "@mui/icons-material"
 import Drawer from "@mui/material/Drawer"
-import { Box, IconButton, ListItem, Modal, TextField, Tooltip, Typography } from "@mui/material"
+import { Box, FormHelperText, IconButton, ListItem, Modal, TextField, Typography } from "@mui/material"
 import { Objeto } from "./items"
 
 //const COLORS = ["#DC2626", "#D97706", "#059669", "#7C3AED", "#DB2777"]
@@ -31,7 +31,7 @@ export default function Board(item){
         return <div className="loading">Cargando...</div>
     }
     link = "https://clever-cobbler-49ca39.netlify.app/"+item.room
-    return <Canvas shapes={shapes} item={item}/>
+    return <Canvas shapes={shapes}/>
 }
 
 function Canvas({ shapes }) {
@@ -98,7 +98,7 @@ function Canvas({ shapes }) {
     const navegador = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/4.png?alt=media&token=5be8a78e-50e7-46e4-a2c8-ab631eb1e9c1"
     const sistema = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/6.png?alt=media&token=738e838a-ee81-4395-bf5a-23e62ad3f3d9"
     const data = [
-      {icon: <Link/>, function: handleOpen, title: "Enlace de invitado", insert:false},
+      {icon: <Link/>, function: handleOpen, title: "Invitar", insert:false},
       {icon: <Undo/>, function: history.undo, title: "Deshacer", insert:false},
       {icon: <Redo/>, function: history.redo, title: "Rehacer", insert:false},
       {icon: <Delete/>, function: deleteItem, title: "Eliminar", insert:false},
@@ -129,8 +129,7 @@ function Canvas({ shapes }) {
                   id={shapeId}
                   onShapePointerDown={onShapePointerDown}
                   selectionColor={selectionColor}
-                  changeText={changeText}
-                />
+                  changeText={changeText}/>
               );
           })}
         </div>
@@ -138,23 +137,13 @@ function Canvas({ shapes }) {
         <Drawer variant="permanent" anchor="left">
         <List>
           {data.map((item)=>(
-            <Tooltip title={item.title}>
-             <ListItem disablePadding sx={{ display: 'block' }}>
+             <ListItem disablePadding sx={{ display: 'block'}}>
              <IconButton onClick={ item.insert?()=>insertItem(item.ref):item.function }
-              sx={{
-                minHeight: 35,
-                height:35,
-                justifyContent: 'center',
-                px: 2.5,
-                minWidth: 0,
-                mr: 'auto',
-                mt: 2
-              }}
-            >
+              sx={{minHeight: 35,height:35,mt: 1.5,ml:2.5}}>
              {item.icon}
             </IconButton>
+            <FormHelperText sx={{textAlign: 'center'}}>{item.title}</FormHelperText>
              </ListItem>
-          </Tooltip>
           ))}
         </List>
         <Modal
