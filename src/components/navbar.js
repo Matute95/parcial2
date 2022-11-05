@@ -76,7 +76,7 @@ export default function MenuAppBar() {
             <MenuOpen/>
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Segundo parcial
+            <strong>Segundo parcial</strong>
           </Typography>
             <div>
               {!auth.currentUser?null:
@@ -174,7 +174,7 @@ export default function MenuAppBar() {
             </Box>
           </Modal>
         </Box>
-    ):(<Board/>)}
+    ):(<Board room={room}/>)}
       </Box>
     </Box>
     </RoomProvider>
