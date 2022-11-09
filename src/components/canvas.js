@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useMap, useMyPresence, useOthers, useHistory } from "../conections/liveblocks.config"
 import List from '@mui/material/List'
-import { Abc, ArrowRightAlt, Delete, Fullscreen, Link, Redo, Undo } from "@mui/icons-material"
+import { Abc, Add, ArrowRightAlt, Delete, Fullscreen, Link, Redo, Remove, Undo } from "@mui/icons-material"
 import Drawer from "@mui/material/Drawer"
 import { Box, FormHelperText, IconButton, ListItem, Modal, TextField, Typography } from "@mui/material"
 import { Objeto } from "./items"
@@ -24,6 +24,8 @@ function getRandomInt(max) {
 }
 
 var link = ""
+var h = 100
+var w = 130
 
 export default function Board(item){
     const shapes = useMap("shapes")
@@ -49,8 +51,8 @@ function Canvas({ shapes }) {
         y: 50+getRandomInt(300),
         url: ref,
         text: "Descripcion",
-        height: 100,
-        width: 130
+        height: h,
+        width: w
       };
       shapes.set(shapeId, item);
     };
@@ -93,6 +95,26 @@ function Canvas({ shapes }) {
         });
       }
     }
+    const mas = () => {
+      h=h+20
+      w=w+20
+      resize()
+    }
+    const menos = () => {
+      h=h-20
+      w=w-20
+      resize()
+    }
+    const resize = () => {
+      const shape = shapes.get(selectedShape)
+      if (shape) {
+        shapes.set(selectedShape, {
+          ...shape,
+          height: h,
+          width: w
+        });
+      }
+    }
     const persona = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/5.png?alt=media&token=e91e4ebd-04b1-4bf6-a698-7bb24f243d96"
     const objeto = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/1.png?alt=media&token=791d3067-d955-4f3b-a92b-8194d0f925b9"
     const db = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/2.png?alt=media&token=f752991f-d546-4a39-81b2-fb8cd62eb979"
@@ -103,6 +125,8 @@ function Canvas({ shapes }) {
       {icon: <Link/>, function: handleOpen, title: "Invitar", insert:false},
       {icon: <Undo/>, function: history.undo, title: "Deshacer", insert:false},
       {icon: <Redo/>, function: history.redo, title: "Rehacer", insert:false},
+      {icon: <Add/>, function: mas, title: "Agrandar", insert:false},
+      {icon: <Remove/>, function: menos, title: "Reducir", insert:false},
       {icon: <Delete/>, function: deleteItem, title: "Eliminar", insert:false},
       {icon: <Fullscreen/>, title: "Contenedor", insert:true, ref:"contenedor"},
       {icon: <Abc/>, title: "Texto", insert:true, ref:"texto"},

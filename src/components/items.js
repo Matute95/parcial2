@@ -25,7 +25,7 @@ export const Objeto = ({ shape, id, onShapePointerDown, selectionColor, changeTe
           className="item"
           style={{
             transform: `translate(${x}px, ${y}px)`,
-            borderColor: "black",
+            borderColor: selectionColor || "black",
             height: `${height*3}px`,
             width: `${width*3}px`,
             borderStyle: "dashed"
