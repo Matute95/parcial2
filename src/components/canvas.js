@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useMap, useMyPresence, useOthers, useHistory } from "../conections/liveblocks.config"
 import List from '@mui/material/List'
-import { Delete, Link, Redo, Undo } from "@mui/icons-material"
+import { Abc, ArrowRightAlt, Delete, Fullscreen, Link, Redo, Undo } from "@mui/icons-material"
 import Drawer from "@mui/material/Drawer"
 import { Box, FormHelperText, IconButton, ListItem, Modal, TextField, Typography } from "@mui/material"
 import { Objeto } from "./items"
@@ -45,10 +45,12 @@ function Canvas({ shapes }) {
     const insertItem = (ref) => {
       const shapeId = Date.now().toString();
       const item = {
-        x: 15+getRandomInt(300),
-        y: 15+getRandomInt(300),
+        x: 50+getRandomInt(300),
+        y: 50+getRandomInt(300),
         url: ref,
-        text: "Descripcion"
+        text: "Descripcion",
+        height: 100,
+        width: 130
       };
       shapes.set(shapeId, item);
     };
@@ -102,12 +104,15 @@ function Canvas({ shapes }) {
       {icon: <Undo/>, function: history.undo, title: "Deshacer", insert:false},
       {icon: <Redo/>, function: history.redo, title: "Rehacer", insert:false},
       {icon: <Delete/>, function: deleteItem, title: "Eliminar", insert:false},
-      {icon: <img src={persona} alt="img"></img>, title: "Persona", insert:true, ref:persona},
-      {icon: <img src={objeto} alt="img"></img>,  title: "Componente", insert:true, ref:objeto},
-      {icon: <img src={db} alt="img"></img>, title: "Base de Datos", insert:true, ref:db},
-      {icon: <img src={app} alt="img"></img>, title: "App Mobil", insert:true, ref:app},
-      {icon: <img src={navegador} alt="img"></img>, title: "Navegador", insert:true, ref:navegador},
-      {icon: <img src={sistema} alt="img"></img>, title: "Sistema", insert:true, ref:sistema}]
+      {icon: <Fullscreen/>, title: "Contenedor", insert:true, ref:"contenedor"},
+      {icon: <Abc/>, title: "Texto", insert:true, ref:"texto"},
+      {icon: <ArrowRightAlt/>, function: deleteItem, title: "Relacion", insert:false, ref:"relacion"},
+      {icon: <img src={persona} alt="img"/>, title: "Persona", insert:true, ref:persona},
+      {icon: <img src={objeto} alt="img"/>,  title: "Componente", insert:true, ref:objeto},
+      {icon: <img src={db} alt="img"/>, title: "Base de Datos", insert:true, ref:db},
+      {icon: <img src={app} alt="img"/>, title: "App Mobil", insert:true, ref:app},
+      {icon: <img src={navegador} alt="img"/>, title: "Navegador", insert:true, ref:navegador},
+      {icon: <img src={sistema} alt="img"/>, title: "Sistema", insert:true, ref:sistema}]
     return (
       <>
         <div className="canvas"
