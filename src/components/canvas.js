@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useMap, useMyPresence, useOthers, useHistory } from "../conections/liveblocks.config"
 import List from '@mui/material/List'
-import { Abc, Add, ArrowRightAlt, Delete, Fullscreen, Link, Redo, Remove, Undo } from "@mui/icons-material"
+import { Abc, Add, ArrowRightAlt, Delete, Fullscreen, Link, Redo, Remove, RotateLeft, RotateRight, Undo } from "@mui/icons-material"
 import Drawer from "@mui/material/Drawer"
 import { Box, FormHelperText, IconButton, ListItem, Modal, TextField, Typography } from "@mui/material"
 import { Objeto } from "./items"
@@ -52,7 +52,8 @@ function Canvas({ shapes }) {
         url: ref,
         text: "Descripcion",
         height: h,
-        width: w
+        width: w,
+        sentido: 0
       };
       shapes.set(shapeId, item);
     };
@@ -115,12 +116,31 @@ function Canvas({ shapes }) {
         });
       }
     }
+    const rotar = () => {
+      const shape = shapes.get(selectedShape)
+      if (shape) {
+        shapes.set(selectedShape, {
+          ...shape,
+          sentido: shape.sentido+90
+        });
+      }
+    }
+    const desrotar = () => {
+      const shape = shapes.get(selectedShape)
+      if (shape) {
+        shapes.set(selectedShape, {
+          ...shape,
+          sentido: shape.sentido-90
+        });
+      }
+    }
     const persona = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/5.png?alt=media&token=e91e4ebd-04b1-4bf6-a698-7bb24f243d96"
     const objeto = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/1.png?alt=media&token=791d3067-d955-4f3b-a92b-8194d0f925b9"
     const db = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/2.png?alt=media&token=f752991f-d546-4a39-81b2-fb8cd62eb979"
     const app = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/3.png?alt=media&token=78ee0763-3c3b-4a41-bbc2-1dbd2e75cb88"
     const navegador = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/4.png?alt=media&token=5be8a78e-50e7-46e4-a2c8-ab631eb1e9c1"
     const sistema = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/6.png?alt=media&token=738e838a-ee81-4395-bf5a-23e62ad3f3d9"
+    const relacion = "https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/7.png?alt=media&token=00d725c8-d5ea-49d5-9809-444c4ea7368a"
     const data = [
       {icon: <Link/>, function: handleOpen, title: "Invitar", insert:false},
       {icon: <Undo/>, function: history.undo, title: "Deshacer", insert:false},
@@ -130,7 +150,9 @@ function Canvas({ shapes }) {
       {icon: <Delete/>, function: deleteItem, title: "Eliminar", insert:false},
       {icon: <Fullscreen/>, title: "Contenedor", insert:true, ref:"contenedor"},
       {icon: <Abc/>, title: "Texto", insert:true, ref:"texto"},
-      {icon: <ArrowRightAlt/>, function: deleteItem, title: "Relacion", insert:false, ref:"relacion"},
+      {icon: <ArrowRightAlt/>, title: "Relacion", insert:true, ref:relacion},
+      {icon: <RotateRight/>, function: rotar, title: "rotar izquierda", insert:false},
+      {icon: <RotateLeft/>, function: desrotar, title: "rotar derecha", insert:false},
       {icon: <img src={persona} alt="img"/>, title: "Persona", insert:true, ref:persona},
       {icon: <img src={objeto} alt="img"/>,  title: "Componente", insert:true, ref:objeto},
       {icon: <img src={db} alt="img"/>, title: "Base de Datos", insert:true, ref:db},
@@ -138,8 +160,8 @@ function Canvas({ shapes }) {
       {icon: <img src={navegador} alt="img"/>, title: "Navegador", insert:true, ref:navegador},
       {icon: <img src={sistema} alt="img"/>, title: "Sistema", insert:true, ref:sistema}]
     return (
-      <>
-        <div className="canvas"
+      <div id="descargar">
+        <div className="canvas" id="micanvas"
         onPointerMove={onCanvasPointerMove}
         onPointerUp={onCanvasPointerUp}>
           {Array.from(shapes, ([shapeId, shape]) => {
@@ -152,7 +174,7 @@ function Canvas({ shapes }) {
               ? "green"
               : undefined;
               return (
-                <Objeto
+                  <Objeto
                   key={shapeId}
                   shape={shape}
                   id={shapeId}
@@ -190,6 +212,6 @@ function Canvas({ shapes }) {
           </Modal>
       </Drawer>
         </div>
-      </>
+      </div>
     )
   }

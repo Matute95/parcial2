@@ -3,7 +3,7 @@ import { Container } from "@mui/system";
 import { Fragment, useState } from "react";
 
 export const Objeto = ({ shape, id, onShapePointerDown, selectionColor, changeText }) => {
-    const { x, y, url, text, height, width } = shape;
+    const { x, y, url, text, height, width, sentido } = shape;
     return (
         <Fragment>
           {url.length>10?
@@ -18,8 +18,10 @@ export const Objeto = ({ shape, id, onShapePointerDown, selectionColor, changeTe
             borderStyle: "solid"
           }}>
           <div>
-          <img src={url} alt="img" style={{height: `${height-5}px`, width: `${width-5}px`}}></img>
+          <img src={url} alt="img" style={{height: `${height-5}px`, width: `${width-5}px`, transform: `rotate(${sentido}deg)`}}></img>
+          {url!=="https://firebasestorage.googleapis.com/v0/b/segundo-parcial-111e9.appspot.com/o/7.png?alt=media&token=00d725c8-d5ea-49d5-9809-444c4ea7368a"&&
           <Texto changeText={changeText} text={text} tipo={"texto"}/>
+          }
           </div></div>:url==="contenedor"?<div
           onPointerDown={(e) => onShapePointerDown(e, id)}
           className="item"

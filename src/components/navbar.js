@@ -5,8 +5,8 @@ import { LiveMap } from '@liveblocks/client';
 import { Add, ArrowForward , AccountCircle} from "@mui/icons-material"
 import { Button, Grid, IconButton, List, ListItem, MenuItem,
         ListItemText, Modal, TextField, Typography, Menu,
-        CssBaseline, AppBar, Box, Toolbar} from "@mui/material"
-import { getProyectos, regProy } from "../conections/dbconnect"
+        CssBaseline, AppBar, Box, Toolbar, Tooltip} from "@mui/material"
+import { getProyectos, getUsuario, regProy } from "../conections/dbconnect"
 import Board from "./canvas"
 import { useParams } from 'react-router-dom';
 
@@ -30,8 +30,14 @@ export default function MenuAppBar() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { id } = useParams()
+  const [usuario, setUsuario] = useState([])
   useEffect(() => {
+    async function cargar(){
+      const user = await getUsuario()
+      setUsuario(user)
+      }
     id===undefined?load():setRoom(id)
+    cargar()
     // eslint-disable-next-line
   }, [])
   async function load(){
@@ -96,6 +102,8 @@ export default function MenuAppBar() {
                 open={Boolean(anchorEl)}
                 onClose={anchor}
               >
+                <MenuItem>{usuario.nombre} {usuario.apellido}</MenuItem>
+                <MenuItem>{usuario.plan}</MenuItem>
                 <MenuItem onClick={out}>Cerrar Sesion</MenuItem>
               </Menu>
             </div>
@@ -116,10 +124,12 @@ export default function MenuAppBar() {
                 <List>
                 <ListItem
                 secondaryAction={
-                    <IconButton edge="end" aria-label="Ir"
-                    onClick={()=>setRoom(proyecto.id)}>
-                    <ArrowForward/>
-                    </IconButton>
+                  <Tooltip title="Entrar">
+                  <IconButton edge="end" aria-label="Ir"
+                  onClick={()=>setRoom(proyecto.id)}>
+                  <ArrowForward/>
+                  </IconButton>
+                  </Tooltip>
                 }>
                 <ListItemText
                     primary={proyecto.nombre}
@@ -153,6 +163,14 @@ export default function MenuAppBar() {
                 />
             </Grid>
             <Grid container justifyContent="flex-end">
+            <Grid item>
+                <Button
+                onClick={handleClose}
+                variant="contained"
+                sx={{ mt: 3, ml: 1 }}>
+                    cancelar
+                </Button>
+            </Grid>
             <Grid item>
                 <Button
                 type="submit"

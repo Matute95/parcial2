@@ -14,6 +14,7 @@
 
    export async function regProy(nombre){
     const user = auth.currentUser.uid
+    console.log(user, nombre)
     const a = await addDoc(collection(db,'proyecto'), 
     {nombre: nombre, usuario: user})
     console.log(a)
