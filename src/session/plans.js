@@ -29,7 +29,7 @@ function PricingContent() {
       <CssBaseline />
       <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
         <Typography variant="h5" align="center" color="text.secondary" component="p">
-          Adquiera uno de nuestros planes para registrarse
+          Adquiera uno de nuestros planes para poder crear y administrar sus proyectos
         </Typography>
       </Container>
       <Container maxWidth="md" component="main">
@@ -84,7 +84,7 @@ function PricingContent() {
                 </CardContent>
                 <CardActions>
                   <Button fullWidth onClick={ ()=>setCheck(plan)}
-                  variant={plan.nombre==='Prueba Gratis'?"outlined":"contained"}>
+                  variant={plan.nombre==='Registrarse Gratis'?"outlined":"contained"}>
                     {plan.nombre==='Prueba Gratis'?"Comenzar":"Adquirir"}
                   </Button>
                 </CardActions>

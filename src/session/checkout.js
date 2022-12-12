@@ -31,11 +31,14 @@ const theme = createTheme();
 
 export default function Checkout(item) {
   const [activeStep, setActiveStep] = React.useState(0);
-
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
-
+  React.useEffect(() => {
+    item.plan.nombre==="Registrarse Gratis"&&setActiveStep(1)
+    // eslint-disable-next-line
+  }, [])
+  
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

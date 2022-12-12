@@ -2,11 +2,11 @@ import { auth } from '../conections/firebase';
 import { StrictMode, useState, useEffect } from 'react';
 import { RoomProvider } from '../conections/liveblocks.config';
 import { LiveMap } from '@liveblocks/client';
-import { Add, ArrowForward , AccountCircle} from "@mui/icons-material"
+import { Add, ArrowForward , AccountCircle, Delete} from "@mui/icons-material"
 import { Button, Grid, IconButton, List, ListItem, MenuItem,
-        ListItemText, Modal, TextField, Typography, Menu,
-        CssBaseline, AppBar, Box, Toolbar, Tooltip} from "@mui/material"
-import { getProyectos, getUsuario, regProy } from "../conections/dbconnect"
+         Modal, TextField, Typography, Menu,
+        CssBaseline, AppBar, Box, Toolbar, Tooltip, FormControl, InputLabel, Select} from "@mui/material"
+import { deleteProy, editProy, getProyectos, getUsuario, regProy } from "../conections/dbconnect"
 import Board from "./canvas"
 import { useParams } from 'react-router-dom';
 
@@ -24,6 +24,7 @@ const style = {
 
 export default function MenuAppBar() {
   const [room, setRoom] = useState("default")
+  const [modal, setModal] = useState("crear")
   const [anchorEl, setAnchorEl] = useState(null)
   const [proyectos, setProyectos] = useState([])
   const [open, setOpen] = useState(false);
@@ -31,6 +32,10 @@ export default function MenuAppBar() {
   const handleClose = () => setOpen(false);
   const { id } = useParams()
   const [usuario, setUsuario] = useState([])
+  const [tipo, setTipo] = useState('');
+  const handleChange = (event) => {
+    setTipo(event.target.value);
+  };
   useEffect(() => {
     async function cargar(){
       const user = await getUsuario()
@@ -45,12 +50,14 @@ export default function MenuAppBar() {
     setProyectos(data)
 }
   const handleSubmit = (event) => {
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      regProy(data.get('Name'))
-      load()
-      handleClose()
-    };
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
+    modal==="crear"?
+    regProy(data.get('Name'), tipo):
+    editProy(modal, data.get('Name'), tipo)
+    load()
+    handleClose()
+  };
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget)
   }
@@ -61,7 +68,18 @@ export default function MenuAppBar() {
     await auth.signOut()
     window.location.reload()
   }
-
+  const crear = () => {
+    setModal("crear")
+    handleOpen()
+  }
+  const editar = (id) => {
+    setModal(id)
+    handleOpen()
+  }
+  const eliminar = async(id) => {
+    await deleteProy(id)
+    window.location.reload()
+  }
   return (
     <StrictMode>
     <RoomProvider
@@ -70,9 +88,10 @@ export default function MenuAppBar() {
         shapes: new LiveMap(),
       }}>
       <Box sx={{ flexGrow: 1 }}><CssBaseline/>
-      <AppBar position="static">
+      <AppBar position="fixed"
+        sx={{ width: `calc(100% - ${room==="default"?0:90}px)`, ml: `${room==="default"?0:90}px` }}>
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, ml:10}}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1}}>
             <strong>Segundo parcial</strong>
           </Typography>
             <div>
@@ -113,7 +132,7 @@ export default function MenuAppBar() {
         {room==="default"?(
         <Box>
         <Grid item xs={12}>
-        <Typography sx={{ mt: 4, mb: 2, textAlign:"center" }} variant="h6" component="div">
+        <Typography sx={{ mt: 4, mb: 2, textAlign:"center" }} variant="h5" component="div">
             <strong>{proyectos===[]?"Cree su primer proyecto":"Proyectos Creados"}</strong>
         </Typography>
         </Grid>
@@ -125,22 +144,29 @@ export default function MenuAppBar() {
                 <ListItem
                 secondaryAction={
                   <Tooltip title="Entrar">
-                  <IconButton edge="end" aria-label="Ir"
-                  onClick={()=>setRoom(proyecto.id)}>
-                  <ArrowForward/>
-                  </IconButton>
+                    <IconButton edge="end" aria-label="Ir"
+                    onClick={()=>setRoom(proyecto.id)}>
+                    <ArrowForward/>
+                    </IconButton>
                   </Tooltip>
                 }>
-                <ListItemText
-                    primary={proyecto.nombre}
-                />
+                <Tooltip title="Borrar">
+                <IconButton onClick={()=>eliminar(proyecto.id)}>
+                <Delete/>
+                </IconButton>
+                </Tooltip>
+                <Tooltip title="Cambiar Nombre">
+                <IconButton onClick={()=>editar(proyecto.id)}>
+                    {proyecto.nombre}
+                </IconButton>
+                </Tooltip>
                 </ListItem>
                 </List>
             </Grid>
             </Grid>
           ))}
           <Button sx={{ml:"45%", mt:3}} variant="contained" 
-          endIcon={<Add/>} onClick={handleOpen}>Crear</Button>
+          endIcon={<Add/>} onClick={crear}>Crear</Button>
           <Modal
             open={open}
             onClose={handleClose}
@@ -149,7 +175,7 @@ export default function MenuAppBar() {
         >
             <Box sx={style} component="form" noValidate onSubmit={handleSubmit}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-                CREAR PROYECTO
+                {modal==="crear"?"CREAR PROYECTO":"EDITAR PROYECTO"}
             </Typography>
             <Grid item xs={12}>
                 <TextField
@@ -161,6 +187,22 @@ export default function MenuAppBar() {
                     fullWidth
                     sx={{mt:2}}
                 />
+            </Grid>
+            <br/>
+            <Grid item xs={12}>
+            <FormControl fullWidth size="small">
+              <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={tipo}
+                label="Tipo"
+                onChange={handleChange}
+              >
+                <MenuItem value="publico">Publico</MenuItem>
+                <MenuItem value="privado">Privado</MenuItem>
+              </Select>
+            </FormControl>
             </Grid>
             <Grid container justifyContent="flex-end">
             <Grid item>
@@ -176,7 +218,7 @@ export default function MenuAppBar() {
                 type="submit"
                 variant="contained"
                 sx={{ mt: 3, ml: 1 }}>
-                    Crear
+                    {modal==="crear"?"crear":"aceptar"}
                 </Button>
             </Grid>
             </Grid>
