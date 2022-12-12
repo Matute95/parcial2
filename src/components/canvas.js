@@ -253,12 +253,14 @@ function Canvas({ shapes }) {
               {correos.map((item)=>(
                 <ListItem disablePadding sx={{ display: 'block'}}>
                   <Typography id="modal-modal-title" variant="h6" component="h2">
-                    {item} 
+                    {item}
+                    {item!=="Proyecto Publico"&&
                     <IconButton onClick={()=>quitar(item)}>
                       <Tooltip title="Eliminar">
                       <Delete/>
                       </Tooltip>
-                      </IconButton>
+                    </IconButton>
+                    }
                   </Typography>
                 </ListItem>
               ))}
