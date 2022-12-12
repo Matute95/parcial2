@@ -63,7 +63,7 @@ export async function deleteProy(id){
 }
 
 export async function verificar(id){
-  if (!auth.currentUser) {return false}
+  if (!auth.currentUser) {return true}
   const proy = await getDoc(doc(db,'proyecto',id))
   if(proy.data().tipo==="publico"){
     return true
