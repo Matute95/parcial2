@@ -63,11 +63,11 @@ export async function deleteProy(id){
 }
 
 export async function verificar(id){
-  if (!auth.currentUser) {return true}
   const proy = await getDoc(doc(db,'proyecto',id))
   if(proy.data().tipo==="publico"){
     return true
   }else{
+    if(!auth.currentUser){return false}
     var flag = false
     proy.data().permisos.forEach((item)=>{
       if(item===auth.currentUser.email){

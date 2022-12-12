@@ -8,7 +8,6 @@ export default function Verificar(){
   const [permiso, setPermiso] = useState("espera")
   useEffect(() => {
     async function first(){
-        console.log("object")
         const flag = await verificar(id)
         console.log(flag)
         flag?setPermiso("si"):setPermiso("no")

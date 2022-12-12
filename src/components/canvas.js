@@ -33,13 +33,15 @@ var room = ""
 var h = 100
 var w = 130
 var correos = []
+var flag = false
 
-export default function Board(item){
+export default function Board(item, invitado){
     const shapes = useMap("shapes")
     if (shapes == null) {
         return <div className="loading">Cargando...</div>
     }
     lista(item.room)
+    flag=invitado
     return <Canvas shapes={shapes}/>
 }
 
@@ -167,7 +169,17 @@ function Canvas({ shapes }) {
       {icon: <Remove/>, function: menos, title: "Reducir", insert:false},
       {icon: <RotateRight/>, function: rotar, title: "rotar izquierda", insert:false},
       {icon: <RotateLeft/>, function: desrotar, title: "rotar derecha", insert:false},]
-    const elementos = [
+    const elementos = flag?[
+      {icon: <Fullscreen/>, title: "Contenedor", insert:true, ref:"contenedor"},
+      {icon: <Abc/>, title: "Texto", insert:true, ref:"texto"},
+      {icon: <ArrowRightAlt/>, title: "Relacion", insert:true, ref:relacion},
+      {icon: <img src={persona} alt="img"/>, title: "Persona", insert:true, ref:persona},
+      {icon: <img src={objeto} alt="img"/>,  title: "Componente", insert:true, ref:objeto},
+      {icon: <img src={db} alt="img"/>, title: "Base de Datos", insert:true, ref:db},
+      {icon: <img src={app} alt="img"/>, title: "App Mobil", insert:true, ref:app},
+      {icon: <img src={navegador} alt="img"/>, title: "Navegador", insert:true, ref:navegador},
+      {icon: <img src={sistema} alt="img"/>, title: "Sistema", insert:true, ref:sistema}
+    ]:[
       {icon: <Link/>, function: handleOpen, title: "Invitar", insert:false},
       {icon: <Fullscreen/>, title: "Contenedor", insert:true, ref:"contenedor"},
       {icon: <Abc/>, title: "Texto", insert:true, ref:"texto"},
@@ -179,6 +191,7 @@ function Canvas({ shapes }) {
       {icon: <img src={navegador} alt="img"/>, title: "Navegador", insert:true, ref:navegador},
       {icon: <img src={sistema} alt="img"/>, title: "Sistema", insert:true, ref:sistema}
     ]
+    
     return (
       <div id="descargar">
         <div className="canvas" 

@@ -24,6 +24,7 @@ const style = {
 
 export default function MenuAppBar() {
   const [room, setRoom] = useState("default")
+  const [flag, setFlag] = useState(false)
   const [modal, setModal] = useState("crear")
   const [anchorEl, setAnchorEl] = useState(null)
   const [proyectos, setProyectos] = useState([])
@@ -41,7 +42,12 @@ export default function MenuAppBar() {
       const user = await getUsuario()
       setUsuario(user)
       }
-    id===undefined?load():setRoom(id)
+    if(id===undefined){ 
+      load()
+    }else{ 
+      setRoom(id)
+      setFlag(true)
+    }
     cargar()
     // eslint-disable-next-line
   }, [])
@@ -122,7 +128,7 @@ export default function MenuAppBar() {
                 onClose={anchor}
               >
                 <MenuItem>{usuario.nombre} {usuario.apellido}</MenuItem>
-                <MenuItem>{usuario.plan}</MenuItem>
+                <MenuItem>{usuario.plan==="Registrarse Gratis"?"Adquiera un plan":usuario.plan}</MenuItem>
                 <MenuItem onClick={out}>Cerrar Sesion</MenuItem>
               </Menu>
             </div>
@@ -225,7 +231,7 @@ export default function MenuAppBar() {
             </Box>
           </Modal>
         </Box>
-    ):(<Board room={room}/>)}
+    ):(<Board room={room} invitado={flag}/>)}
       </Box>
     </Box>
     </RoomProvider>
